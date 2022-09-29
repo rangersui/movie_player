@@ -13,6 +13,8 @@ def index(request):
 
 
 def login(request):
+    if request.session.get('is_login', default=None):
+        return redirect('/index')
     if request.method == "GET":
         login_form = forms.UserForm()
         return render(request, 'user/login.html', {"login_form": login_form})
@@ -27,13 +29,16 @@ def login(request):
             try:
                 current_user = models.User.objects.get(name=username)
                 if current_user.password == password:
+                    request.session['is_login'] = True
+                    request.session['user_name'] = current_user.name
+                    request.session['user_password'] = current_user.password
                     return redirect('/index')  # 正确就重定向到主页，并处于登陆状态
                 else:
                     message = "密码不正确！"
             except:
                 message = "用户不存在！"
-            return render(request, 'user/login.html', {"message": message,"login_form": login_form})
-        return render(request, 'user/login.html', {"message": message, "login_form": login_form})
+            return render(request, 'user/login.html', locals())
+        return render(request, 'user/login.html', locals())
 
 
 def register(request):
@@ -42,5 +47,7 @@ def register(request):
 
 
 def logout(request):
-    pass
-    return redirect('/index/')
+    request.session.flush()  # 只要登出就把Session全部清空，下面的写法是错误的
+    # if request.session.get('is_login', None):
+    #     return redirect('/index')
+    return redirect('/index')
