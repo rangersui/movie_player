@@ -10,6 +10,7 @@ class User(models.Model):
     gender = (
         ('male', '男'),
         ('female', '女'),
+        ('non-binary', '非二元')
     )
     name = models.CharField(max_length=128, unique=True)
     password = models.CharField(max_length=256)
