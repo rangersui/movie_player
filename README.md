@@ -9,3 +9,7 @@ and front end based on bootstrap
 # deploy hint/部署提示
 - Turn off debug mode when deploying.在部署时关闭debug模式。
 - Change secret key when deploying.在部署时修改secret key。
+# Branch information/分支信息
+- 当前分支为video_demo
+- 该分支用于基本的video的model、view和template的实现
+- 后续会加入搜索和上传等功能
